@@ -6,6 +6,7 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import static java.lang.Thread.sleep;
 
@@ -14,10 +15,19 @@ public class SimulatorScreen extends JPanel implements Runnable {
     double x1;
     double y1;
     boolean setTime = false;
+    private List<String> namePlanet = new ArrayList<String>() {
+        {
+            add("sun");
+            add("earth");
+            add("jupiter");
+            add("mar");
+            add("mercury");
+            add("venus");
+        }
+    };
 
     ArrayList<Planet> planet;
     private BufferedImage space;
-    int time = 1;
     boolean isRunning = true;
     boolean CenterPlanet = true;
 
@@ -30,7 +40,6 @@ public class SimulatorScreen extends JPanel implements Runnable {
 
     public void run() {
         while (true) {
-            if (false) break;
             if (setTime) {
                 for (Planet aPlanet : planet) aPlanet.update1();
                 setTime = false;
@@ -84,14 +93,15 @@ public class SimulatorScreen extends JPanel implements Runnable {
                 String name = JOptionPane.showInputDialog(SimulatorScreen.this, "Enter Name");
                 if (name != null) {
                     if (CenterPlanet) {
+                        if (!namePlanet.contains(name.toLowerCase())) name = "sun";
                         x1 = e.getX();
                         y1 = e.getY();
                         planet.add(new Planet(name, e.getX(), e.getY(), CenterPlanet, x1, y1, x1, y1, 0.0));
                     } else {
+                        if (!namePlanet.contains(name.toLowerCase())) name = "earth";
                         double x2 = Double.parseDouble(JOptionPane.showInputDialog(SimulatorScreen.this, "Enter x2"));
                         double y2 = Double.parseDouble(JOptionPane.showInputDialog(SimulatorScreen.this, "Enter y2"));
                         double cycle = Double.parseDouble(JOptionPane.showInputDialog(SimulatorScreen.this, "Enter cycle"));
-
                         planet.add(new Planet(name, e.getX(), e.getY(), CenterPlanet, x1, y1, x2, y2, cycle * 1000));
                     }
 

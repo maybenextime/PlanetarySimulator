@@ -6,13 +6,24 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class PlanetarySimulator extends JFrame {
     private SimulatorScreen screen;
+    private List<String> namePlanet = new ArrayList<String>() {
+        {
+            add("sun");
+            add("earth");
+            add("jupiter");
+            add("mar");
+            add("mercury");
+            add("venus");
+        }
+    };
 
     private PlanetarySimulator() {
         setSize(1000, 1000);
-        this.setDefaultCloseOperation(3);
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         screen = new SimulatorScreen();
         add(screen);
         this.addKeyListener(new Hander());
@@ -55,8 +66,8 @@ public class PlanetarySimulator extends JFrame {
             if (e.getKeyCode() == 114) {
                 boolean b = screen.isRunning;
                 screen.isRunning = false;
-                double time1 = Double.parseDouble(JOptionPane.showInputDialog(PlanetarySimulator.this.screen, "Enter begin time"));
-                double time2 = Double.parseDouble(JOptionPane.showInputDialog(PlanetarySimulator.this.screen, "Enter end time"));
+                double time1 = Double.parseDouble(JOptionPane.showInputDialog(PlanetarySimulator.this.screen, "Enter begin time(s)"));
+                double time2 = Double.parseDouble(JOptionPane.showInputDialog(PlanetarySimulator.this.screen, "Enter end time(s)"));
                 for (int i = 0; i < PlanetarySimulator.this.screen.planet.size(); i++) {
                     PlanetarySimulator.this.screen.planet.get(i).timeStart = time1 * 1000;
                     PlanetarySimulator.this.screen.planet.get(i).timeEnd = time2 * 1000;
@@ -71,10 +82,12 @@ public class PlanetarySimulator extends JFrame {
                 String name = JOptionPane.showInputDialog(PlanetarySimulator.this.screen, "Enter Name");
                 if (name != null) {
                     if (screen.CenterPlanet) {
+                        if (!namePlanet.contains(name.toLowerCase())) name = "sun";
                         screen.x1 = Double.parseDouble(JOptionPane.showInputDialog(PlanetarySimulator.this.screen, "Enter x")) - 20;
                         screen.y1 = Double.parseDouble(JOptionPane.showInputDialog(PlanetarySimulator.this.screen, "Enter y")) - 20;
                         screen.planet.add(new Planet(name, (int) screen.x1, (int) screen.y1, screen.CenterPlanet, screen.x1, screen.y1, screen.x1, screen.y1, 0.0));
                     } else {
+                        if (!namePlanet.contains(name.toLowerCase())) name = "earth";
                         double x = Double.parseDouble(JOptionPane.showInputDialog(PlanetarySimulator.this.screen, "Enter x")) - 40;
                         double y = Double.parseDouble(JOptionPane.showInputDialog(PlanetarySimulator.this.screen, "Enter y")) - 40;
                         double x2 = Double.parseDouble(JOptionPane.showInputDialog(PlanetarySimulator.this.screen, "Enter x2"));
