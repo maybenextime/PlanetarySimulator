@@ -16,7 +16,7 @@ class Planet {
     private double a;
     private double b;
     private double c;
-    private double cycle;
+    double cycle;
     boolean Center;
     private int x;
     private double angle = 0;
@@ -24,8 +24,10 @@ class Planet {
     private int y;
     private int firstx;
     private int firsty;
-    double timeStart = 0;
-    double timeEnd = -1.0;
+    int timeStart = 0;
+    int timeEnd = -1;
+    int timeSE = -1;
+    int timeSEReallity = 0;
     private BufferedImage image;
     private String name;
 
@@ -62,6 +64,11 @@ class Planet {
     }
 
     void updatePlanet() {
+        if (timeStart >= cycle) {
+            timeStart = (int) (timeStart % cycle);
+            if (timeSE < 0) timeSEReallity = 0;
+            else timeSEReallity += 1;
+        }
         timeStart += 20;
         this.angle = this.angle + 40 * PI / cycle;
         x = (int) (x0 + a * cos(angle) * cos(apha) - b * sin(angle) * sin(apha));

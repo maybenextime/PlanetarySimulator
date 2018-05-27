@@ -3,6 +3,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -44,15 +45,20 @@ public class SimulatorScreen extends JPanel implements Runnable {
                 for (Planet aPlanet : planet) aPlanet.update1();
                 setTime = false;
             }
-
-            if (this.planet.size() > 1)
-                if (this.planet.get(1).timeStart == this.planet.get(1).timeEnd)
+            if (this.planet.size() > 1) {
+                if ((this.planet.get(1).timeStart == this.planet.get(1).timeEnd) && (this.planet.get(1).timeSE == this.planet.get(1).timeSEReallity)) {
                     isRunning = false;
+                    this.planet.get(1).timeSE = -1;
+                    this.planet.get(1).timeEnd = -1;
+
+                }
+            }
             if (isRunning)
                 for (Planet aPlanet : planet)
                     if (aPlanet.Center) aPlanet.updatePlanetCenter();
                     else aPlanet.updatePlanet();
             repaint();
+
             try {
                 sleep(20);
             } catch (InterruptedException ignored) {
@@ -83,7 +89,8 @@ public class SimulatorScreen extends JPanel implements Runnable {
             for (int i = planet.size() - 1; i >= 0; i--) planet.get(i).DrawPlanet(g);
     }
 
-    private class Mouse implements MouseListener {
+    private class Mouse implements MouseListener, MouseMotionListener {
+
 
         @Override
         public void mouseClicked(MouseEvent e) {
@@ -114,6 +121,17 @@ public class SimulatorScreen extends JPanel implements Runnable {
 
         @Override
         public void mousePressed(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseDragged(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseMoved(MouseEvent e) {
+
         }
 
         @Override

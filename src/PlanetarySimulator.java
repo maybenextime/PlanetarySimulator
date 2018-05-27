@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class PlanetarySimulator extends JFrame {
     private SimulatorScreen screen;
     private List<String> namePlanet = new ArrayList<String>() {
@@ -69,8 +70,9 @@ public class PlanetarySimulator extends JFrame {
                 double time1 = Double.parseDouble(JOptionPane.showInputDialog(PlanetarySimulator.this.screen, "Enter begin time(s)"));
                 double time2 = Double.parseDouble(JOptionPane.showInputDialog(PlanetarySimulator.this.screen, "Enter end time(s)"));
                 for (int i = 0; i < PlanetarySimulator.this.screen.planet.size(); i++) {
-                    PlanetarySimulator.this.screen.planet.get(i).timeStart = time1 * 1000;
-                    PlanetarySimulator.this.screen.planet.get(i).timeEnd = time2 * 1000;
+                    PlanetarySimulator.this.screen.planet.get(i).timeStart = (int) Math.round((time1 * 1000) % PlanetarySimulator.this.screen.planet.get(i).cycle);
+                    PlanetarySimulator.this.screen.planet.get(i).timeEnd = (int) Math.round((time2 * 1000) % PlanetarySimulator.this.screen.planet.get(i).cycle);
+                    PlanetarySimulator.this.screen.planet.get(i).timeSE = (int) Math.round(time2 / time1);
                 }
                 PlanetarySimulator.this.screen.setTime = true;
                 screen.isRunning = b;
