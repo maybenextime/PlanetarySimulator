@@ -70,9 +70,9 @@ public class PlanetarySimulator extends JFrame {
                 double time1 = Double.parseDouble(JOptionPane.showInputDialog(PlanetarySimulator.this.screen, "Enter begin time(s)"));
                 double time2 = Double.parseDouble(JOptionPane.showInputDialog(PlanetarySimulator.this.screen, "Enter end time(s)"));
                 for (int i = 0; i < PlanetarySimulator.this.screen.planet.size(); i++) {
-                    PlanetarySimulator.this.screen.planet.get(i).timeStart = (int) Math.round((time1 * 1000) % PlanetarySimulator.this.screen.planet.get(i).cycle);
-                    PlanetarySimulator.this.screen.planet.get(i).timeEnd = (int) Math.round((time2 * 1000) % PlanetarySimulator.this.screen.planet.get(i).cycle);
-                    PlanetarySimulator.this.screen.planet.get(i).timeSE = (int) Math.round(time2 / time1);
+                    PlanetarySimulator.this.screen.planet.get(i).setTimeStart((int) Math.round((time1 * 1000) % PlanetarySimulator.this.screen.planet.get(i).cycle));
+                    PlanetarySimulator.this.screen.planet.get(i).setTimeEnd ( (int) Math.round((time2 * 1000) % PlanetarySimulator.this.screen.planet.get(i).cycle));
+                    PlanetarySimulator.this.screen.planet.get(i).setTimeSE ((int) Math.round(time2 / time1));
                 }
                 PlanetarySimulator.this.screen.setTime = true;
                 screen.isRunning = b;

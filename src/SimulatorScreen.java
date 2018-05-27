@@ -46,10 +46,10 @@ public class SimulatorScreen extends JPanel implements Runnable {
                 setTime = false;
             }
             if (this.planet.size() > 1) {
-                if ((this.planet.get(1).timeStart == this.planet.get(1).timeEnd) && (this.planet.get(1).timeSE == this.planet.get(1).timeSEReallity)) {
+                if ((this.planet.get(1).getTimeStart() == this.planet.get(1).getTimeEnd()) && (this.planet.get(1).getTimeSE() == this.planet.get(1).getTimeSEReallity())) {
                     isRunning = false;
-                    this.planet.get(1).timeSE = -1;
-                    this.planet.get(1).timeEnd = -1;
+                    this.planet.get(1).setTimeSE(-1);
+                    this.planet.get(1).setTimeEnd(-1);
 
                 }
             }

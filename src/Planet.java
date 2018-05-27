@@ -24,10 +24,10 @@ class Planet {
     private int y;
     private int firstx;
     private int firsty;
-    int timeStart = 0;
-    int timeEnd = -1;
-    int timeSE = -1;
-    int timeSEReallity = 0;
+    private int timeStart = 0;
+    private int timeEnd = -1;
+    private int timeSE = -1;
+    private int timeSEReallity = 0;
     private BufferedImage image;
     private String name;
 
@@ -56,6 +56,38 @@ class Planet {
             this.angle = -(Math.acos(((firstx - x0) * cos(apha) + (firsty - y0) * sin(apha)) / a));
     }
 
+
+
+
+    int getTimeStart() {
+        return timeStart;
+    }
+
+    int getTimeEnd() {
+        return timeEnd;
+    }
+
+    int getTimeSE() {
+        return timeSE;
+    }
+
+    int getTimeSEReallity() {
+        return timeSEReallity;
+    }
+
+
+
+    void setTimeStart(int timeStart) {
+        this.timeStart = timeStart;
+    }
+
+    void setTimeEnd(int timeEnd) {
+        this.timeEnd = timeEnd;
+    }
+
+    void setTimeSE(int timeSE) {
+        this.timeSE = timeSE;
+    }
     void update1() {
         if (-(firstx - x0) * sin(apha) + (firsty - y0) * cos(apha) > 0)
             this.angle = ((Math.acos(((firstx - x0) * cos(apha) + (firsty - y0) * sin(apha)) / a)) + this.timeStart + 40 * PI / cycle);
@@ -68,6 +100,7 @@ class Planet {
             timeStart = (int) (timeStart % cycle);
             if (timeSE < 0) timeSEReallity = 0;
             else timeSEReallity += 1;
+
         }
         timeStart += 20;
         this.angle = this.angle + 40 * PI / cycle;
