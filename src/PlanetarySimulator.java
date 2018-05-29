@@ -3,11 +3,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class PlanetarySimulator extends JFrame {
     private SimulatorScreen screen;
@@ -23,10 +24,48 @@ public class PlanetarySimulator extends JFrame {
     };
 
     private PlanetarySimulator() {
-        setSize(1000, 1000);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setSize(1000, 1000);
+        setLocationRelativeTo(this);
         screen = new SimulatorScreen();
-        add(screen);
+        screen.setSize((int) (10000 * screen.zoom.getZoomNumb()), (int) (10000 * screen.zoom.getZoomNumb()));
+        screen.setLocation(0, 0);
+        screen.addMouseWheelListener(e -> {
+            if (e.isControlDown()) {
+                double oldZoom = screen.getZoom().getZoomNumb();
+                double amount = 0.05;
+                if ((e.getWheelRotation() > 0) && (screen.zoom.getZoomNumb() > 0.1)) {
+                    screen.setZoom(new zoom(e.getX(), e.getY(), oldZoom - amount));
+
+                    //  screen.setLocation((int) -(e.getX()*(1-screen.zoom.getZoomNumb())),(int) -(e.getY()*(1-screen.zoom.getZoomNumb())));
+
+                }
+                if ((e.getWheelRotation() < 0) && (screen.zoom.getZoomNumb() < 2)) {
+                    screen.setZoom(new zoom(e.getX(), e.getY(), oldZoom + amount));
+                    //      screen.setLocation((int) (e.getX()*(1-screen.zoom.getZoomNumb())),(int) (e.getY()*(1-screen.zoom.getZoomNumb())));
+
+                }
+                if (screen.planet.size() >= 1)
+                    for (int i = 0; i < screen.planet.size(); i++) screen.planet.get(i).zoom = screen.getZoom();
+
+                screen.setSize((int) (10000 * screen.zoom.getZoomNumb()), (int) (10000 * screen.zoom.getZoomNumb()));
+
+            }
+        });
+
+        JPanel back = new JPanel();
+        back.setSize(getSize());
+        back.setBackground(Color.WHITE);
+        back.setLayout(null);
+        back.setLocation(0, 0);
+        JPanel panel = new JPanel();
+        panel.setBackground(Color.WHITE);
+        panel.setSize(getSize());
+        back.add(screen);
+        add(back);
+
+        moverment mv = new moverment(back.getComponents());
+
         this.addKeyListener(new Hander());
         setVisible(true);
         try {
@@ -67,12 +106,12 @@ public class PlanetarySimulator extends JFrame {
             if (e.getKeyCode() == 114) {
                 boolean b = screen.isRunning;
                 screen.isRunning = false;
-                double time1 = Double.parseDouble(JOptionPane.showInputDialog(PlanetarySimulator.this.screen, "Enter begin time(s)"));
-                double time2 = Double.parseDouble(JOptionPane.showInputDialog(PlanetarySimulator.this.screen, "Enter end time(s)"));
+                double time1 = Double.parseDouble(JOptionPane.showInputDialog(PlanetarySimulator.this, "Enter begin time(s)"));
+                double time2 = Double.parseDouble(JOptionPane.showInputDialog(PlanetarySimulator.this, "Enter end time(s)"));
                 for (int i = 0; i < PlanetarySimulator.this.screen.planet.size(); i++) {
                     PlanetarySimulator.this.screen.planet.get(i).setTimeStart((int) Math.round((time1 * 1000) % PlanetarySimulator.this.screen.planet.get(i).cycle));
-                    PlanetarySimulator.this.screen.planet.get(i).setTimeEnd ( (int) Math.round((time2 * 1000) % PlanetarySimulator.this.screen.planet.get(i).cycle));
-                    PlanetarySimulator.this.screen.planet.get(i).setTimeSE ((int) Math.round(time2 / time1));
+                    PlanetarySimulator.this.screen.planet.get(i).setTimeEnd((int) Math.round((time2 * 1000) % PlanetarySimulator.this.screen.planet.get(i).cycle));
+                    PlanetarySimulator.this.screen.planet.get(i).setTimeSE((int) Math.round(time2 / time1));
                 }
                 PlanetarySimulator.this.screen.setTime = true;
                 screen.isRunning = b;
@@ -85,18 +124,19 @@ public class PlanetarySimulator extends JFrame {
                 if (name != null) {
                     if (screen.CenterPlanet) {
                         if (!namePlanet.contains(name.toLowerCase())) name = "sun";
-                        screen.x1 = Double.parseDouble(JOptionPane.showInputDialog(PlanetarySimulator.this.screen, "Enter x")) - 20;
-                        screen.y1 = Double.parseDouble(JOptionPane.showInputDialog(PlanetarySimulator.this.screen, "Enter y")) - 20;
-                        screen.planet.add(new Planet(name, (int) screen.x1, (int) screen.y1, screen.CenterPlanet, screen.x1, screen.y1, screen.x1, screen.y1, 0.0));
+                        screen.x1 = Double.parseDouble(JOptionPane.showInputDialog(PlanetarySimulator.this, "Enter x"));
+                        screen.y1 = Double.parseDouble(JOptionPane.showInputDialog(PlanetarySimulator.this, "Enter y"));
+                        screen.planet.add(new Planet(name, (int) screen.x1, (int) screen.y1, screen.CenterPlanet, screen.x1, screen.y1, screen.x1, screen.y1, screen.getZoom()));
+                        System.out.println(screen.planet.get(0).x);
+                        System.out.println(screen.planet.get(0).y);
+
                     } else {
                         if (!namePlanet.contains(name.toLowerCase())) name = "earth";
-                        double x = Double.parseDouble(JOptionPane.showInputDialog(PlanetarySimulator.this.screen, "Enter x")) - 40;
-                        double y = Double.parseDouble(JOptionPane.showInputDialog(PlanetarySimulator.this.screen, "Enter y")) - 40;
+                        double x = Double.parseDouble(JOptionPane.showInputDialog(PlanetarySimulator.this.screen, "Enter x"));
+                        double y = Double.parseDouble(JOptionPane.showInputDialog(PlanetarySimulator.this.screen, "Enter y"));
                         double x2 = Double.parseDouble(JOptionPane.showInputDialog(PlanetarySimulator.this.screen, "Enter x2"));
                         double y2 = Double.parseDouble(JOptionPane.showInputDialog(PlanetarySimulator.this.screen, "Enter y2"));
-                        double cycle = Double.parseDouble(JOptionPane.showInputDialog(PlanetarySimulator.this.screen, "Enter cycle"));
-
-                        screen.planet.add(new Planet(name, (int) x, (int) y, screen.CenterPlanet, screen.x1, screen.y1, x2, y2, cycle * 1000));
+                        screen.planet.add(new Planet(name, (int) x, (int) y, screen.CenterPlanet, screen.x1, screen.y1, x2, y2, screen.getZoom()));
                     }
                 }
                 screen.isRunning = b;

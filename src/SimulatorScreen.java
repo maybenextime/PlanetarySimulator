@@ -3,7 +3,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,7 +14,10 @@ import static java.lang.Thread.sleep;
 public class SimulatorScreen extends JPanel implements Runnable {
     double x1;
     double y1;
+
+    zoom zoom = new zoom(5000, 5000, 1);
     boolean setTime = false;
+
     private List<String> namePlanet = new ArrayList<String>() {
         {
             add("sun");
@@ -50,13 +52,13 @@ public class SimulatorScreen extends JPanel implements Runnable {
                     isRunning = false;
                     this.planet.get(1).setTimeSE(-1);
                     this.planet.get(1).setTimeEnd(-1);
-
                 }
             }
             if (isRunning)
                 for (Planet aPlanet : planet)
                     if (aPlanet.Center) aPlanet.updatePlanetCenter();
                     else aPlanet.updatePlanet();
+            removeAll();
             repaint();
 
             try {
@@ -71,7 +73,10 @@ public class SimulatorScreen extends JPanel implements Runnable {
             space = ImageIO.read(getClass().getResourceAsStream("space.GIF"));
         } catch (IOException ignored) {
         }
-        g.drawImage(space, 0, 0, 1000, 1000, null);
+        g.drawImage(space, 0, 0, (int) (10000 * zoom.getZoomNumb()), (int) (10000 * zoom.getZoomNumb()), null);
+    }
+
+    private void paintInfo(Graphics g) {
         g.setColor(Color.white);
         g.setFont(new Font("Serif", Font.BOLD, 15));
         g.drawString("Press F1 to show the Option", 0, 12);
@@ -80,17 +85,20 @@ public class SimulatorScreen extends JPanel implements Runnable {
         if (CenterPlanet) g.drawString("Creat Center Planet", 400, 40);
         else g.drawString("Creat A Planet", 400, 40);
         g.setColor(Color.gray);
+    }
 
+    private void paintPlanet(Graphics g) {
+        if (planet.size() >= 1)
+            for (int i = planet.size() - 1; i >= 0; i--) planet.get(i).drawPlanet(g);
     }
 
     public void paint(Graphics g) {
         paintBG(g);
-        if (planet.size() >= 1)
-            for (int i = planet.size() - 1; i >= 0; i--) planet.get(i).DrawPlanet(g);
+        paintInfo(g);
+        paintPlanet(g);
     }
 
-    private class Mouse implements MouseListener, MouseMotionListener {
-
+    private class Mouse implements MouseListener {
 
         @Override
         public void mouseClicked(MouseEvent e) {
@@ -101,37 +109,24 @@ public class SimulatorScreen extends JPanel implements Runnable {
                 if (name != null) {
                     if (CenterPlanet) {
                         if (!namePlanet.contains(name.toLowerCase())) name = "sun";
-                        x1 = e.getX();
-                        y1 = e.getY();
-                        planet.add(new Planet(name, e.getX(), e.getY(), CenterPlanet, x1, y1, x1, y1, 0.0));
+                        x1 = (int) (e.getX() / zoom.getZoomNumb());
+                        y1 = (int) (e.getY() / zoom.getZoomNumb());
+                        planet.add(new Planet(name, (int) x1, (int) y1, CenterPlanet, x1, y1, x1, y1, getZoom()));
+                        repaint();
                     } else {
                         if (!namePlanet.contains(name.toLowerCase())) name = "earth";
                         double x2 = Double.parseDouble(JOptionPane.showInputDialog(SimulatorScreen.this, "Enter x2"));
                         double y2 = Double.parseDouble(JOptionPane.showInputDialog(SimulatorScreen.this, "Enter y2"));
-                        double cycle = Double.parseDouble(JOptionPane.showInputDialog(SimulatorScreen.this, "Enter cycle"));
-                        planet.add(new Planet(name, e.getX(), e.getY(), CenterPlanet, x1, y1, x2, y2, cycle * 1000));
+                        planet.add(new Planet(name, (int) (e.getX() / zoom.getZoomNumb()), (int) (e.getY() / zoom.getZoomNumb()), CenterPlanet, x1, y1, x2, y2, getZoom()));
+                        System.out.println(e.getX());
                     }
-
                 }
                 isRunning = b;
-
             }
-
         }
 
         @Override
         public void mousePressed(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseDragged(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseMoved(MouseEvent e) {
-
         }
 
         @Override
@@ -146,5 +141,11 @@ public class SimulatorScreen extends JPanel implements Runnable {
         public void mouseExited(MouseEvent e) {
         }
     }
+    zoom getZoom() {
+        return zoom;   }
 
+
+    void setZoom(zoom zoom) {
+        this.zoom = zoom;
+    }
 }
