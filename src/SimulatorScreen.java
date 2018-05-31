@@ -15,7 +15,7 @@ public class SimulatorScreen extends JPanel implements Runnable {
     double x1;
     double y1;
 
-    zoom zoom = new zoom(5000, 5000, 1);
+    double zoom = 1;
     boolean setTime = false;
 
     private List<String> namePlanet = new ArrayList<String>() {
@@ -73,7 +73,7 @@ public class SimulatorScreen extends JPanel implements Runnable {
             space = ImageIO.read(getClass().getResourceAsStream("space.GIF"));
         } catch (IOException ignored) {
         }
-        g.drawImage(space, 0, 0, (int) (10000 * zoom.getZoomNumb()), (int) (10000 * zoom.getZoomNumb()), null);
+        g.drawImage(space, 0, 0, (int) (10000 * zoom), (int) (10000 * zoom), null);
     }
 
     private void paintInfo(Graphics g) {
@@ -109,16 +109,15 @@ public class SimulatorScreen extends JPanel implements Runnable {
                 if (name != null) {
                     if (CenterPlanet) {
                         if (!namePlanet.contains(name.toLowerCase())) name = "sun";
-                        x1 = (int) (e.getX() / zoom.getZoomNumb());
-                        y1 = (int) (e.getY() / zoom.getZoomNumb());
+                        x1 = (int) (e.getX() / zoom);
+                        y1 = (int) (e.getY() / zoom);
                         planet.add(new Planet(name, (int) x1, (int) y1, CenterPlanet, x1, y1, x1, y1, getZoom()));
                         repaint();
                     } else {
                         if (!namePlanet.contains(name.toLowerCase())) name = "earth";
                         double x2 = Double.parseDouble(JOptionPane.showInputDialog(null, "Enter x2"));
                         double y2 = Double.parseDouble(JOptionPane.showInputDialog(null, "Enter y2"));
-                        planet.add(new Planet(name, (int) (e.getX() / zoom.getZoomNumb()), (int) (e.getY() / zoom.getZoomNumb()), CenterPlanet, x1, y1, x2, y2, getZoom()));
-                        System.out.println(e.getX());
+                        planet.add(new Planet(name, (int) (e.getX() / zoom), (int) (e.getY() / zoom), CenterPlanet, x1, y1, x2, y2, getZoom()));
                     }
                 }
                 isRunning = b;
@@ -141,11 +140,11 @@ public class SimulatorScreen extends JPanel implements Runnable {
         public void mouseExited(MouseEvent e) {
         }
     }
-    zoom getZoom() {
+    double getZoom() {
         return zoom;   }
 
 
-    void setZoom(zoom zoom) {
+    void setZoom(double zoom) {
         this.zoom = zoom;
     }
 }

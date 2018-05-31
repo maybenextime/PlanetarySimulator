@@ -36,8 +36,8 @@ public class moverment implements MouseMotionListener, MouseListener {
         if (e.getComponent().getY() < -(e.getComponent().getHeight() - 1000))
             e.getComponent().setLocation((e.getX() + e.getComponent().getX()) - x, -(e.getComponent().getHeight() - 1000));
 
-        System.out.println(e.getComponent().getX());
-        System.out.println(e.getComponent().getY());
+
+
 
     }
 

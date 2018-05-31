@@ -26,23 +26,35 @@ public class PlanetarySimulator extends JFrame {
         setSize(1000, 1000);
         setLocationRelativeTo(this);
         screen = new SimulatorScreen();
-        screen.setSize((int) (10000 * screen.zoom.getZoomNumb()), (int) (10000 * screen.zoom.getZoomNumb()));
+        screen.setSize((int) (10000 * screen.zoom), (int) (10000 * screen.zoom));
         screen.setLocation(0, 0);
         screen.addMouseWheelListener(e -> {
             if (e.isControlDown()) {
-                double oldZoom = screen.getZoom().getZoomNumb();
+                double oldZoom = screen.getZoom();
                 double amount = 0.05;
-                if ((e.getWheelRotation() > 0) && (screen.zoom.getZoomNumb() > 0.1)) {
-                    screen.setZoom(new zoom(e.getX(), e.getY(), oldZoom - amount));
+                if ((e.getWheelRotation() > 0) && (screen.zoom > 0.1)) {
+                    screen.setZoom(oldZoom - amount);
+
                 }
-                if ((e.getWheelRotation() < 0) && (screen.zoom.getZoomNumb() < 2)) {
-                    screen.setZoom(new zoom(e.getX(), e.getY(), oldZoom + amount));
+                if ((e.getWheelRotation() < 0) && (screen.zoom < 2)) {
+                    screen.setZoom(oldZoom + amount);
 
                 }
                 if (screen.planet.size() >= 1)
                     for (int i = 0; i < screen.planet.size(); i++) screen.planet.get(i).zoom = screen.getZoom();
 
-                screen.setSize((int) (10000 * screen.zoom.getZoomNumb()), (int) (10000 * screen.zoom.getZoomNumb()));
+                screen.setSize((int) (10000 * screen.zoom), (int) (10000 * screen.zoom));
+                screen.setLocation((int) (-e.getXOnScreen()/2+screen.getLocation().getX()),(int) (-e.getYOnScreen()/2+screen.getLocation().getY()));
+               System.out.println(e.getX());
+               //System.out.println(oldZoom);
+              //  System.out.println(screen.zoom.getZoomNumb());
+                System.out.println(screen.getLocation().getX());
+                System.out.println(screen.getSize().getWidth());
+                if(screen.getLocation().getX()>0) screen.setLocation(0, (int) screen.getLocation().getY());
+                if(screen.getLocation().getY()>0) screen.setLocation((int) screen.getLocation().getX() , 0);
+                if(screen.getSize().getHeight()+screen.getLocation().getY()<1000) screen.setLocation((int) screen.getLocation().getX(),(int)(1000-screen.getSize().getHeight()));
+                if(screen.getSize().getWidth()+screen.getLocation().getX()<1000) screen.setLocation( (int)(1000-screen.getSize().getWidth()), (int) screen.getLocation().getY());
+
 
             }
         });
@@ -122,7 +134,7 @@ public class PlanetarySimulator extends JFrame {
                         screen.y1 = Double.parseDouble(JOptionPane.showInputDialog(PlanetarySimulator.this, "Enter y"));
                         screen.planet.add(new Planet(name, (int) screen.x1, (int) screen.y1, screen.CenterPlanet, screen.x1, screen.y1, screen.x1, screen.y1, screen.getZoom()));
 
-                        screen.setLocation((int) (-screen.x1*screen.zoom.getZoomNumb()+500),(int) (-screen.y1*screen.zoom.getZoomNumb()+500));
+                        screen.setLocation((int) (-screen.x1*screen.zoom+500),(int) (-screen.y1*screen.zoom+500));
                         if(screen.getLocation().getX()>0) screen.setLocation(0, (int) screen.getLocation().getY());
                         if(screen.getLocation().getY()>0) screen.setLocation((int) screen.getLocation().getX() , 0);
                         if(screen.getSize().getHeight()+screen.getLocation().getY()<1000) screen.setLocation((int) screen.getLocation().getX(),(int)(1000-screen.getSize().getHeight()));
@@ -135,7 +147,7 @@ public class PlanetarySimulator extends JFrame {
                         double x2 = Double.parseDouble(JOptionPane.showInputDialog(PlanetarySimulator.this.screen, "Enter x2"));
                         double y2 = Double.parseDouble(JOptionPane.showInputDialog(PlanetarySimulator.this.screen, "Enter y2"));
                         screen.planet.add(new Planet(name, (int) x, (int) y, screen.CenterPlanet, screen.x1, screen.y1, x2, y2, screen.getZoom()));
-                        screen.setLocation((int) (-screen.x1*screen.zoom.getZoomNumb()+500),(int) (-screen.y1*screen.zoom.getZoomNumb()+500));
+                        screen.setLocation((int) (-screen.x1*screen.zoom+500),(int) (-screen.y1*screen.zoom+500));
                         if(screen.getLocation().getX()>0) screen.setLocation(0, (int) screen.getLocation().getY());
                         if(screen.getLocation().getY()>0) screen.setLocation((int) screen.getLocation().getX() , 0);
                         if(screen.getSize().getHeight()+screen.getLocation().getY()<1000) screen.setLocation((int) screen.getLocation().getX(),(int)(1000-screen.getSize().getHeight()));

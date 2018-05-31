@@ -16,10 +16,10 @@ class Planet {
     private double b;
     double cycle;
     boolean Center;
-    int x;
+    private int x;
     private double angle = 0;
     private double apha;
-    int y;
+    private int y;
     private int firstx;
     private int firsty;
     private int timeStart = 0;
@@ -27,10 +27,10 @@ class Planet {
     private int timeSE = -1;
     private int timeSEReallity = 0;
     private String name;
-    zoom zoom;
+    double zoom;
 
 
-    Planet(String name, int x, int y, boolean Center, double x1, double y1, double x2, double y2, zoom zoom) {
+    Planet(String name, int x, int y, boolean Center, double x1, double y1, double x2, double y2, double zoom) {
         this.zoom = zoom;
         this.firstx = x;
         this.firsty = y;
@@ -119,17 +119,17 @@ class Planet {
 
             Graphics2D g2d = (Graphics2D) g;
             AffineTransform old = g2d.getTransform();
-            g2d.rotate(apha, x0 * zoom.getZoomNumb(), y0 * zoom.getZoomNumb());
-            g2d.drawArc((int) (((x0 - a)) * zoom.getZoomNumb()), (int) ((y0 - b) * zoom.getZoomNumb()), (int) (a * 2 * zoom.getZoomNumb()), (int) (b * 2 * zoom.getZoomNumb()), 0, 360);
+            g2d.rotate(apha, x0 * zoom, y0 * zoom);
+            g2d.drawArc((int) (((x0 - a)) * zoom), (int) ((y0 - b) * zoom), (int) (a * 2 * zoom), (int) (b * 2 * zoom), 0, 360);
             g2d.setTransform(old);
-            g.fillArc((int) ((x2 - 5) * zoom.getZoomNumb()), (int) ((y2 - 5) * zoom.getZoomNumb()), (int) (10 * zoom.getZoomNumb()), (int) (10 * zoom.getZoomNumb()), 0, 360);
-            g.drawArc((int) ((x0 - 5) * zoom.getZoomNumb()), (int) ((y0 - 5) * zoom.getZoomNumb()), (int) (10 * zoom.getZoomNumb()), (int) (10 * zoom.getZoomNumb()), 0, 360);
-            g.drawLine((int) (x * zoom.getZoomNumb()), (int) (y * zoom.getZoomNumb()), (int) (x1 * zoom.getZoomNumb()), (int) (y1 * zoom.getZoomNumb()));
-            g.drawLine((int) (x * zoom.getZoomNumb()), (int) (y * zoom.getZoomNumb()), (int) (x2 * zoom.getZoomNumb()), (int) (y2 * zoom.getZoomNumb()));
-            g.drawImage(image, (int) ((x - 20) * zoom.getZoomNumb()), (int) ((y - 20) * zoom.getZoomNumb()), (int) (40 * zoom.getZoomNumb()), (int) (40 * zoom.getZoomNumb()), null);
+            g.fillArc((int) ((x2 - 5) * zoom), (int) ((y2 - 5) * zoom), (int) (10 * zoom), (int) (10 * zoom), 0, 360);
+            g.drawArc((int) ((x0 - 5) * zoom), (int) ((y0 - 5) * zoom), (int) (10 * zoom), (int) (10 * zoom), 0, 360);
+            g.drawLine((int) (x * zoom), (int) (y * zoom), (int) (x1 * zoom), (int) (y1 * zoom));
+            g.drawLine((int) (x * zoom), (int) (y * zoom), (int) (x2 * zoom), (int) (y2 * zoom));
+            g.drawImage(image, (int) ((x - 20) * zoom), (int) ((y - 20) * zoom), (int) (40 * zoom), (int) (40 * zoom), null);
 
         } else {
-            g.drawImage(image, (int) ((x - 40) * zoom.getZoomNumb()), (int) ((y - 40) * zoom.getZoomNumb()), (int) (80 * zoom.getZoomNumb()), (int) (80 * zoom.getZoomNumb()), null);
+            g.drawImage(image, (int) ((x - 40) * zoom), (int) ((y - 40) * zoom), (int) (80 * zoom), (int) (80 * zoom), null);
             ((Graphics2D) g).scale(1, 1);
 
         }
