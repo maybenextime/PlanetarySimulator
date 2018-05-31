@@ -18,6 +18,8 @@ public class moverment implements MouseMotionListener, MouseListener {
     }
     @Override
     public void mouseClicked(MouseEvent e) {
+        System.out.println(e.getX());
+        System.out.println(e.getComponent().getLocation().getX());
 
     }
 
