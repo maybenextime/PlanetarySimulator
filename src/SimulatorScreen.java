@@ -94,7 +94,7 @@ public class SimulatorScreen extends JPanel implements Runnable {
 
     public void paint(Graphics g) {
         paintBG(g);
-        paintInfo(g);
+     paintInfo(g);
         paintPlanet(g);
     }
 
@@ -105,7 +105,7 @@ public class SimulatorScreen extends JPanel implements Runnable {
             if (e.getClickCount() == 2) {
                 boolean b = isRunning;
                 isRunning = false;
-                String name = JOptionPane.showInputDialog(SimulatorScreen.this, "Enter Name");
+                String name = JOptionPane.showInputDialog(null, "Enter Name");
                 if (name != null) {
                     if (CenterPlanet) {
                         if (!namePlanet.contains(name.toLowerCase())) name = "sun";
@@ -115,8 +115,8 @@ public class SimulatorScreen extends JPanel implements Runnable {
                         repaint();
                     } else {
                         if (!namePlanet.contains(name.toLowerCase())) name = "earth";
-                        double x2 = Double.parseDouble(JOptionPane.showInputDialog(SimulatorScreen.this, "Enter x2"));
-                        double y2 = Double.parseDouble(JOptionPane.showInputDialog(SimulatorScreen.this, "Enter y2"));
+                        double x2 = Double.parseDouble(JOptionPane.showInputDialog(null, "Enter x2"));
+                        double y2 = Double.parseDouble(JOptionPane.showInputDialog(null, "Enter y2"));
                         planet.add(new Planet(name, (int) (e.getX() / zoom.getZoomNumb()), (int) (e.getY() / zoom.getZoomNumb()), CenterPlanet, x1, y1, x2, y2, getZoom()));
                         System.out.println(e.getX());
                     }

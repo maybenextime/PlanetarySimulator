@@ -3,8 +3,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,13 +34,9 @@ public class PlanetarySimulator extends JFrame {
                 double amount = 0.05;
                 if ((e.getWheelRotation() > 0) && (screen.zoom.getZoomNumb() > 0.1)) {
                     screen.setZoom(new zoom(e.getX(), e.getY(), oldZoom - amount));
-
-                    //  screen.setLocation((int) -(e.getX()*(1-screen.zoom.getZoomNumb())),(int) -(e.getY()*(1-screen.zoom.getZoomNumb())));
-
                 }
                 if ((e.getWheelRotation() < 0) && (screen.zoom.getZoomNumb() < 2)) {
                     screen.setZoom(new zoom(e.getX(), e.getY(), oldZoom + amount));
-                    //      screen.setLocation((int) (e.getX()*(1-screen.zoom.getZoomNumb())),(int) (e.getY()*(1-screen.zoom.getZoomNumb())));
 
                 }
                 if (screen.planet.size() >= 1)
@@ -64,8 +58,8 @@ public class PlanetarySimulator extends JFrame {
         back.add(screen);
         add(back);
 
-        moverment mv = new moverment(back.getComponents());
 
+        moverment mv = new moverment(back.getComponents());
         this.addKeyListener(new Hander());
         setVisible(true);
         try {
@@ -75,7 +69,7 @@ public class PlanetarySimulator extends JFrame {
     }
 
     private void ShowKeyOptions() {
-        JOptionPane.showMessageDialog(this, "Press SPACE to pause program\n\n Press F2 to switch Star/Center Planet\n\n Press F3 to select a specific time period\n\n Press F4( or Double Click) to creat a planet\n\n Press F5 to Refresh ");
+        JOptionPane.showMessageDialog(this, "Press SPACE to pause program\n\n Press F2 to switch Star/Center Planet\n\n Press F3 to select a specific time period\n\n Press F4( or Double Click) to creat a planet\n\n Press F5 to Refresh\n\n Hold Ctrl+ scroll Mouse to zoom in/out ");
     }
 
     private class Hander implements KeyListener {
@@ -120,15 +114,19 @@ public class PlanetarySimulator extends JFrame {
             if (e.getKeyCode() == 115) {
                 boolean b = screen.isRunning;
                 screen.isRunning = false;
-                String name = JOptionPane.showInputDialog(PlanetarySimulator.this.screen, "Enter Name");
+                String name = JOptionPane.showInputDialog(PlanetarySimulator.this, "Enter Name");
                 if (name != null) {
                     if (screen.CenterPlanet) {
                         if (!namePlanet.contains(name.toLowerCase())) name = "sun";
                         screen.x1 = Double.parseDouble(JOptionPane.showInputDialog(PlanetarySimulator.this, "Enter x"));
                         screen.y1 = Double.parseDouble(JOptionPane.showInputDialog(PlanetarySimulator.this, "Enter y"));
                         screen.planet.add(new Planet(name, (int) screen.x1, (int) screen.y1, screen.CenterPlanet, screen.x1, screen.y1, screen.x1, screen.y1, screen.getZoom()));
-                        System.out.println(screen.planet.get(0).x);
-                        System.out.println(screen.planet.get(0).y);
+
+                        screen.setLocation((int) (-screen.x1*screen.zoom.getZoomNumb()+500),(int) (-screen.y1*screen.zoom.getZoomNumb()+500));
+                        if(screen.getLocation().getX()>0) screen.setLocation(0, (int) screen.getLocation().getY());
+                        if(screen.getLocation().getY()>0) screen.setLocation((int) screen.getLocation().getX() , 0);
+                        if(screen.getSize().getHeight()+screen.getLocation().getY()<1000) screen.setLocation((int) screen.getLocation().getX(),(int)(1000-screen.getSize().getHeight()));
+                        if(screen.getSize().getWidth()+screen.getLocation().getX()<1000) screen.setLocation( (int)(1000-screen.getSize().getWidth()), (int) screen.getLocation().getY());
 
                     } else {
                         if (!namePlanet.contains(name.toLowerCase())) name = "earth";
@@ -137,6 +135,11 @@ public class PlanetarySimulator extends JFrame {
                         double x2 = Double.parseDouble(JOptionPane.showInputDialog(PlanetarySimulator.this.screen, "Enter x2"));
                         double y2 = Double.parseDouble(JOptionPane.showInputDialog(PlanetarySimulator.this.screen, "Enter y2"));
                         screen.planet.add(new Planet(name, (int) x, (int) y, screen.CenterPlanet, screen.x1, screen.y1, x2, y2, screen.getZoom()));
+                        screen.setLocation((int) (-screen.x1*screen.zoom.getZoomNumb()+500),(int) (-screen.y1*screen.zoom.getZoomNumb()+500));
+                        if(screen.getLocation().getX()>0) screen.setLocation(0, (int) screen.getLocation().getY());
+                        if(screen.getLocation().getY()>0) screen.setLocation((int) screen.getLocation().getX() , 0);
+                        if(screen.getSize().getHeight()+screen.getLocation().getY()<1000) screen.setLocation((int) screen.getLocation().getX(),(int)(1000-screen.getSize().getHeight()));
+                        if(screen.getSize().getWidth()+screen.getLocation().getX()<1000) screen.setLocation( (int)(1000-screen.getSize().getWidth()), (int) screen.getLocation().getY());
                     }
                 }
                 screen.isRunning = b;
