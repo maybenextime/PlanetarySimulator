@@ -1,3 +1,5 @@
+import javafx.stage.Screen;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -26,7 +28,7 @@ public class PlanetarySimulator extends JFrame {
         setSize(1000, 1000);
         setLocationRelativeTo(this);
         screen = new SimulatorScreen();
-        screen.setSize((int) (10000 * screen.zoom), (int) (10000 * screen.zoom));
+        screen.setSize((int) (10000.0 * screen.zoom), (int) (10000.0 * screen.zoom));
         screen.setLocation(0, 0);
         screen.addMouseWheelListener(e -> {
             if (e.isControlDown()) {
@@ -43,21 +45,12 @@ public class PlanetarySimulator extends JFrame {
                 if (screen.planet.size() >= 1)
                     for (int i = 0; i < screen.planet.size(); i++) screen.planet.get(i).zoom = screen.getZoom();
 
-                screen.setSize((int) (10000 * screen.zoom), (int) (10000 * screen.zoom));
-                System.out.println(screen.getLocation().getX());
-                screen.setLocation((int) (screen.getLocation().getX()+10000/screen.getSize().getWidth()*e.getX()*(oldZoom-screen.zoom)),(int) (screen.getLocation().getY()+10000/screen.getSize().getHeight()*e.getY()*(oldZoom-screen.zoom))) ;
-               System.out.println(e.getX());
-               //System.out.println(oldZoom);
-              // System.out.println(screen.zoom.getZoomNumb());
-                System.out.println(screen.getLocation().getX());
-                System.out.println((int) (screen.getLocation().getX()-e.getX()*(oldZoom-screen.zoom)));
-               // System.out.println(screen.getLocation().getY());
-
-               // System.out.println(screen.getSize().getWidth());
+                screen.setSize((int) (10000.0 * screen.zoom), (int) (10000.0 * screen.zoom));
+                screen.setLocation((int) (screen.getLocation().getX()+10000.0/screen.getSize().getWidth()*e.getX()*(oldZoom-screen.zoom)),(int) (screen.getLocation().getY()+10000.0/screen.getSize().getHeight()*e.getY()*(oldZoom-screen.zoom))) ;
                 if(screen.getLocation().getX()>0) screen.setLocation(0, (int) screen.getLocation().getY());
                 if(screen.getLocation().getY()>0) screen.setLocation((int) screen.getLocation().getX() , 0);
-                if(screen.getSize().getHeight()+screen.getLocation().getY()<1000) screen.setLocation((int) screen.getLocation().getX(),(int)(1000-screen.getSize().getHeight()));
-                if(screen.getSize().getWidth()+screen.getLocation().getX()<1000) screen.setLocation( (int)(1000-screen.getSize().getWidth()), (int) screen.getLocation().getY());
+                if(screen.getSize().getHeight()+screen.getLocation().getY()<1000) screen.setLocation((int) screen.getLocation().getX(),(int)(1000.0-screen.getSize().getHeight()));
+                if(screen.getSize().getWidth()+screen.getLocation().getX()<1000) screen.setLocation( (int)(1000.0-screen.getSize().getWidth()), (int) screen.getLocation().getY());
 
 
             }
