@@ -80,7 +80,7 @@ public class PlanetarySimulator extends JFrame {
         }
     }
 
-    private void ShowKeyOptions() {
+    private void showKeyOptions() {
         JOptionPane.showMessageDialog(this, "Press SPACE to pause program\n\n Press F2 to switch Star/Center Planet\n\n Press F3 to select a specific time period\n\n Press F4( or Double Click) to creat a planet\n\n Press F5 to Refresh\n\n Hold Ctrl+ scroll Mouse to zoom in/out ");
     }
 
@@ -95,7 +95,7 @@ public class PlanetarySimulator extends JFrame {
         @Override
         public void keyPressed(KeyEvent e) {
             if (e.getKeyCode() == 112) {
-                PlanetarySimulator.this.ShowKeyOptions();
+                PlanetarySimulator.this.showKeyOptions();
             }
             if (e.getKeyCode() == 32) {
                 screen.isRunning = !screen.isRunning;
